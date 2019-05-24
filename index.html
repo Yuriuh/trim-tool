@@ -13,7 +13,7 @@
     .container {
       display: flex;
     }
-    #textarea {
+    #input-area {
       width: 100%;
       min-height: 95vh;
       resize: none;
@@ -23,16 +23,23 @@
       flex: 1.5;
       padding: 0px 20px 0 20px;
     }
-    .trim-btn {
-      height: 50px;
+    .btn-area {
+      min-height: 96vh;
       flex: 1;
+    }
+    .btn {
+      width: 100%;
+      height: 50px;
+    }
+    .clear-btn {
+      margin-top: 35px;
     }
     .right-area {
       height: 95vh;
       padding: 0px 20px 0 20px;
       flex: 1.5;
     }
-    #show {
+    #show-area {
       width: 100%;
       min-height: 95vh;
       resize: none;
@@ -45,13 +52,19 @@
   <div class="container">
 
     <div class="left-area">
-      <textarea id="textarea" placeholder="input..."></textarea>
+      <textarea id="input-area" placeholder="input..."></textarea>
     </div>
 
-    <button class="trim-btn">trim</button>
+    <div class="btn-area">
+
+      <button class="trim-btn btn">trim</button>
+
+      <button class="clear-btn btn">clear</button>
+
+    </div>
 
     <div class="right-area">
-        <textarea id="show" placeholder="output..."></textarea>
+        <textarea id="show-area" placeholder="output..."></textarea>
     </div>
 
   </div>
@@ -77,15 +90,21 @@
     resize()
   })();
 
-  (function () {
-    var textarea = document.querySelector('#textarea')
+  (function trimFunction() {
+    var inputArea = document.querySelector('#input-area')
     var trimBtn = document.querySelector('.trim-btn')
-    var show = document.querySelector('#show')
+    var clearBtn = document.querySelector('.clear-btn')
+    var showArea = document.querySelector('#show-area')
 
     trimBtn.addEventListener('click', function() {
-      var text = textarea.value
+      var text = inputArea.value
       var result = trimSpace(text)
-      show.innerText = result
+      showArea.innerText = result
+    })
+
+    clearBtn.addEventListener('click', function() {
+      inputArea.value = ''
+      showArea.innerText = ''
     })
 
     function trimSpace(str) {
