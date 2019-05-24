@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>trim-tool</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    .container {
+      display: flex;
+    }
+    #textarea {
+      width: 100%;
+      min-height: 95vh;
+      resize: none;
+    }
+    .left-area {
+      height: 96vh;
+      flex: 1.5;
+      padding: 0px 20px 0 20px;
+    }
+    .trim-btn {
+      height: 50px;
+      flex: 1;
+    }
+    .right-area {
+      height: 95vh;
+      padding: 0px 20px 0 20px;
+      flex: 1.5;
+    }
+    #show {
+      width: 100%;
+      min-height: 95vh;
+      resize: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="left-area">
+      <textarea id="textarea" placeholder="input..."></textarea>
+    </div>
+
+    <button class="trim-btn">trim</button>
+
+    <div class="right-area">
+        <textarea id="show" placeholder="output..."></textarea>
+    </div>
+
+  </div>
+
+</body>
+
+</html>
+
+<script>
+  (function resizeInput() {
+    var tx = document.getElementsByTagName('textarea')
+    function resize() {
+      for (var i = 0; i < tx.length; i++) {
+        var attr = 'height:' + (tx[i].scrollHeight) + 'px;overflow-y:hidden;'
+        tx[i].setAttribute('style', attr)
+        tx[i].addEventListener("input", OnInput, false)
+      }
+    }
+    function OnInput() {
+      this.style.height = 'auto'
+      this.style.height = (this.scrollHeight) + 'px'
+    }
+    resize()
+  })();
+
+  (function () {
+    var textarea = document.querySelector('#textarea')
+    var trimBtn = document.querySelector('.trim-btn')
+    var show = document.querySelector('#show')
+
+    trimBtn.addEventListener('click', function() {
+      var text = textarea.value
+      var result = trimSpace(text)
+      show.innerText = result
+    })
+
+    function trimSpace(str) {
+      str = str.trim()
+      var strArr = str.split('')
+      for (var i = 0; i < strArr.length; i++) {
+        var s = strArr[i]
+        if (s === ' ') {
+          var next = strArr[i+1]
+          while (next === ' ') {
+            strArr.splice(i+1, 1)
+            next = strArr[i+1]
+          }
+        }
+      }
+      return strArr.join('')
+    }
+  })()
+</script>
