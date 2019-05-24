@@ -108,31 +108,45 @@
     var clearBtn = document.querySelector('.clear-btn')
     var copyMessage = document.querySelector('.copy-message')
 
+    var showMessage = throttle(function(text) {
+      copyMessage.innerText = text
+      setTimeout(function() {
+        copyMessage.innerText = ''
+      }, 1000)
+    }, 2000)
+
     trimBtn.addEventListener('click', function() {
       var text = inputArea.value
       var result = trimSpace(text)
+      showArea.value = result
+      console.log('result', result)
       showArea.innerText = result
     })
 
     copyBtn.addEventListener('click', function() {
+      var text = inputArea.value
       showArea.select()
       if (document.execCommand('copy')) {
-        document.execCommand('copy')
-        copyMessage.innerHTML = '复制成功'
+        if (text !== '') {
+          document.execCommand('copy')
+          showMessage('复制成功')
+        } else {
+          showMessage('文本为空')
+        }
       }
-      setTimeout(function() {
-        copyMessage.innerText = ''
-      }, 1000)
       showArea.blur()
     })
 
     clearBtn.addEventListener('click', function() {
       inputArea.value = ''
+      showArea.value = ''
+      inputArea.innerText = ''
       showArea.innerText = ''
     })
 
     function trimSpace(str) {
       str = str.trim()
+      str = str.replace(/[\r\n]/g, '')
       var strArr = str.split('')
       for (var i = 0; i < strArr.length; i++) {
         var s = strArr[i]
@@ -145,6 +159,19 @@
         }
       }
       return strArr.join('')
+    }
+
+    function throttle(fn, delay) {
+      var canUse = true
+      return function () {
+        if (canUse) {
+          fn.apply(this, arguments)
+          canUse = false
+          setTimeout(function() {
+            canUse = true
+          }, delay)
+        }
+      }
     }
   })()
 </script>
