@@ -31,6 +31,9 @@
       width: 100%;
       height: 50px;
     }
+    .copy-btn {
+      margin-top: 35px;
+    }
     .clear-btn {
       margin-top: 35px;
     }
@@ -59,7 +62,11 @@
 
       <button class="trim-btn btn">trim</button>
 
+      <button class="copy-btn btn">copy</button>
+      
       <button class="clear-btn btn">clear</button>
+
+      <p class="copy-message"></p>
 
     </div>
 
@@ -92,14 +99,28 @@
 
   (function trimFunction() {
     var inputArea = document.querySelector('#input-area')
-    var trimBtn = document.querySelector('.trim-btn')
-    var clearBtn = document.querySelector('.clear-btn')
     var showArea = document.querySelector('#show-area')
+    var trimBtn = document.querySelector('.trim-btn')
+    var copyBtn = document.querySelector('.copy-btn')
+    var clearBtn = document.querySelector('.clear-btn')
+    var copyMessage = document.querySelector('.copy-message')
 
     trimBtn.addEventListener('click', function() {
       var text = inputArea.value
       var result = trimSpace(text)
       showArea.innerText = result
+    })
+
+    copyBtn.addEventListener('click', function() {
+      showArea.select()
+      if (document.execCommand('copy')) {
+        document.execCommand('copy')
+        copyMessage.innerHTML = '复制成功'
+      }
+      setTimeout(function() {
+        copyMessage.innerText = ''
+      }, 1000)
+      showArea.blur()
     })
 
     clearBtn.addEventListener('click', function() {
